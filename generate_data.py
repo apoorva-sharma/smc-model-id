@@ -2,7 +2,7 @@ import gym
 import math
 import numpy as np
 
-class generateData():
+class generateData:
     def __init__(self,env):
         self.env = env
         #currently only writing for pendulum
@@ -22,10 +22,12 @@ class generateData():
 
         self.set_param(param)
         self.set_state(st)
-        self.env.step(a)
-        next_st = self.get_state()
+        obs = self.env.unwrapped._get_obs()
+        print(obs)
+        next_st,_,_,_ = self.env.step(a)
+        #next_st = self.get_state()
 
-        return (param,st,a,next_st)
+        return (param,obs,a,next_st)
 
     def set_param(self,param):
         #currently written for setting mass of pendulum
