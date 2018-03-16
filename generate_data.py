@@ -21,7 +21,6 @@ class DataGenerator:
         self.set_param(param)
         self.set_state(st)
         obs = self.env.unwrapped._get_obs()
-        print(obs)
         next_st,_,_,_ = self.env.step(a)
         #next_st = self.get_state()
 
