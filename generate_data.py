@@ -2,17 +2,15 @@ import gym
 import math
 import numpy as np
 
-class generateData():
+class DataGenerator():
     def __init__(self,env):
         self.env = env
         #currently only writing for pendulum
 
     def do_n_steps(self,n,param_vec):
-        data = []
-        for param in param_vec:
-            for i in range(n):
-                data.append(self.step(param))
-        return data
+        for i, param in enumerate(param_vec):
+            for _ in range(n):
+                yield (i,) + self.step(param)
 
 
     def step(self,param):
@@ -55,7 +53,7 @@ class generateData():
         return np.array([th, thdot])
 
     def sample_action(self):
-        return env.action_space.sample()
+        return self.env.action_space.sample()
 
     def angle_normalize(self,x):
         return (((x+np.pi) % (2*np.pi)) - np.pi)
@@ -63,6 +61,6 @@ class generateData():
 if __name__ == '__main__':
     env = gym.make('Pendulum-v0')
     env.reset()
-    gen = generateData(env)
+    gen = DataGenerator(env)
     param_vec = gen.generate_param_vec(5)
     print(gen.do_n_steps(5,param_vec))
